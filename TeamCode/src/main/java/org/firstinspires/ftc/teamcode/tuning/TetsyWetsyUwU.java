@@ -47,7 +47,7 @@ public class TetsyWetsyUwU extends LinearOpMode {
     int armtarget=0;
     int buckettarget=0;
     int hangtarget=0;
-    double extendotarget=0;
+    int extendotarget=0;
     double pitchtarget=135;
     double dynamicKp=0.015;
     boolean isPressingA=false;
@@ -106,17 +106,14 @@ public class TetsyWetsyUwU extends LinearOpMode {
         hang.setPower(dynamicKp*(hangtarget-hang.getCurrentPosition()));
     }
     public void extendoTets(){
-        Servo linkage1 = hardwareMap.get(Servo.class, "linkage1");
-        Servo linkage2 = hardwareMap.get(Servo.class, "linkage2");
-        linkage1.setDirection(Servo.Direction.REVERSE);
-        if (gamepad2.left_trigger>0 && extendotarget<1){
-            extendotarget+=0.1;
+        DcMotorEx extendo=hardwareMap.get(DcMotorEx.class, "extendo");
+        if (gamepad2.left_trigger>0){
+            extendotarget+=15;
         }
-        else if (gamepad2.right_trigger>0 && extendotarget>0){
-            extendotarget-=0.1;
+        else if (gamepad2.right_trigger>0 && extendotarget>15){
+            extendotarget-=15;
         }
-        linkage1.setPosition(extendotarget);
-        linkage2.setPosition(extendotarget);
+        extendo.setPower(dynamicKp*(extendotarget-extendo.getCurrentPosition()));
     }
     public void clawFingerTets(){
         Servo clawfingers = hardwareMap.get(Servo.class, "clawfingers");
